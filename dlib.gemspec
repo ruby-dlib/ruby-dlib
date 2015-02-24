@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "dlib"
   spec.version       = Dlib::VERSION
   spec.authors       = ["Kenta Murata"]
-  spec.email         = ["mrkn@cookpad.com"]
+  spec.email         = ["mrkn@mrkn.jp"]
   spec.summary       = %q{TODO: Write a short summary. Required.}
   spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = ""
