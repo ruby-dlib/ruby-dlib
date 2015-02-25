@@ -20,6 +20,8 @@ Init_dlib(void)
 {
   mDlib = rb_define_module("Dlib");
 
+  rb_require("dlib/version");
+
   eDlibError = rb_define_class_under(mDlib, "Error", rb_eStandardError);
 
   Init_dlib_geometry();
