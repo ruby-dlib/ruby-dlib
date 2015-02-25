@@ -1,6 +1,6 @@
 # Dlib
 
-TODO: Write a gem description
+Ruby binding of [dlib C++ library](http://dlib.net/).
 
 ## Installation
 
@@ -20,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+See examples directory.
 
 ## Contributing
 
