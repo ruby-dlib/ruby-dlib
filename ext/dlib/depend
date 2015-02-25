@@ -1,0 +1,12 @@
+DLIB_SRCDIR = ../dlib-18.13
+
+DLIB_FUNCTIONS = \
+	geometry.inc \
+	rectangle.inc \
+	image.inc \
+	find_candidate_object_locations.inc
+
+OBJS += $(DLIB_OJBS)
+
+dlib.o: dlib.cpp $(DLIB_FUNCTIONS)
+dlib_deps.o: dlib_deps.cpp
