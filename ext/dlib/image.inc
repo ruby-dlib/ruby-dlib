@@ -86,6 +86,55 @@ dlib_rb_image_nc(VALUE image)
   return LONG2NUM(nc);
 }
 
+extern "C" VALUE
+dlib_rb_image_save_jpeg(VALUE image, VALUE filename)
+{
+  rgb_image_container *image_container = dlib_rb_image_get_rgb_image_container(image);
+
+  dlib::save_jpeg(image_container->image, StringValueCStr(filename) /*, quality */);
+
+  return image;
+}
+
+extern "C" VALUE
+dlib_rb_image_draw_rectangle(int argc, VALUE *argv, VALUE image)
+{
+  rgb_image_container *image_container = dlib_rb_image_get_rgb_image_container(image);
+
+  VALUE rect, pixel, thickness_v;
+  rb_scan_args(argc, argv, "21", &rect, &pixel, &thickness_v);
+
+  if (!is_obj_dlib_rectangle(rect)) {
+    rb_raise(rb_eTypeError, "Invalid rectangle is given: %"PRIsVALUE, rect);
+  }
+
+  rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
+
+  Check_Type(pixel, T_ARRAY);
+  if (RARRAY_LEN(pixel) != 3) {
+    rb_raise(rb_eArgError, "Invalid pixel value is given: %"PRIsVALUE, pixel);
+  }
+
+  unsigned char red   = static_cast<unsigned char>(NUM2UINT(RARRAY_AREF(pixel, 0)));
+  unsigned char green = static_cast<unsigned char>(NUM2UINT(RARRAY_AREF(pixel, 1)));
+  unsigned char blue  = static_cast<unsigned char>(NUM2UINT(RARRAY_AREF(pixel, 2)));
+
+  unsigned int thickness = 1;
+  if (!NIL_P(thickness_v)) {
+    Check_Type(thickness_v, T_FIXNUM);
+    thickness = FIX2UINT(thickness_v);
+  }
+
+  dlib::draw_rectangle(
+    image_container->image,
+    rectcont->rect,
+    dlib::rgb_pixel(red, green, blue),
+    thickness
+  );
+
+  return image;
+}
+
 static void
 Init_dlib_image()
 {
@@ -98,4 +147,8 @@ Init_dlib_image()
 
   rb_define_method(cDlibImage, "nr", RUBY_METHOD_FUNC(dlib_rb_image_nr), 0);
   rb_define_method(cDlibImage, "nc", RUBY_METHOD_FUNC(dlib_rb_image_nc), 0);
+
+  rb_define_method(cDlibImage, "save_jpeg", RUBY_METHOD_FUNC(dlib_rb_image_save_jpeg), 1);
+
+  rb_define_method(cDlibImage, "draw_rectangle!", RUBY_METHOD_FUNC(dlib_rb_image_draw_rectangle), -1);
 }
