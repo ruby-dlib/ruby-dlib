@@ -57,6 +57,41 @@ dlib_rb_rectangle_new(dlib::rectangle const &dlib_rect)
   return rect;
 }
 
+static VALUE
+dlib_rb_rectangle_initialize(int argc, VALUE* argv, VALUE rect)
+{
+  rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
+
+  switch (argc) {
+    case 4: {
+      long left, top, right, bottom;
+      left = NUM2LONG(argv[0]);
+      top = NUM2LONG(argv[1]);
+      right = NUM2LONG(argv[2]);
+      bottom = NUM2LONG(argv[3]);
+      rectcont->rect = dlib::rectangle(left, top, right, bottom);
+      break;
+    }
+
+    case 2: {
+      unsigned long width, height;
+      width  = NUM2ULONG(argv[0]);
+      height = NUM2ULONG(argv[1]);
+      rectcont->rect = dlib::rectangle(width, height);
+      break;
+    }
+
+    case 0:
+      // Nothing to do.
+      break;
+
+    default:
+      rb_raise(rb_eArgError, "Irregal number of arguments are given");
+  }
+
+  return rect;
+}
+
 extern "C" VALUE
 dlib_rb_rectangle_left(VALUE rect)
 {
@@ -91,6 +126,8 @@ Init_dlib_rectangle()
   cDlibRectangle = rb_define_class_under(mDlib, "Rectangle", rb_cData);
 
   rb_define_alloc_func(cDlibRectangle, dlib_rb_rectangle_alloc);
+
+  rb_define_method(cDlibRectangle, "initialize", RUBY_METHOD_FUNC(dlib_rb_rectangle_initialize), -1);
 
   rb_define_method(cDlibRectangle, "left", RUBY_METHOD_FUNC(dlib_rb_rectangle_left), 0);
   rb_define_method(cDlibRectangle, "top", RUBY_METHOD_FUNC(dlib_rb_rectangle_top), 0);
