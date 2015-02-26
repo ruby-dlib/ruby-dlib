@@ -11,6 +11,8 @@ module Dlib
           expect(subject.top).to    eq(2)
           expect(subject.right).to  eq(3)
           expect(subject.bottom).to eq(4)
+          expect(subject.width).to  eq(3)
+          expect(subject.height).to eq(3)
         end
       end
 
@@ -22,6 +24,8 @@ module Dlib
           expect(subject.top).to    eq(0)
           expect(subject.right).to  eq(1)
           expect(subject.bottom).to eq(2)
+          expect(subject.width).to  eq(2)
+          expect(subject.height).to eq(3)
         end
       end
 
@@ -33,6 +37,8 @@ module Dlib
           expect(subject.top).to    eq(0)
           expect(subject.right).to  eq(-1)
           expect(subject.bottom).to eq(-1)
+          expect(subject.width).to  eq(0)
+          expect(subject.height).to eq(0)
         end
       end
     end
