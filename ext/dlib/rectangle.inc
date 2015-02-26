@@ -124,21 +124,21 @@ extern "C" VALUE
 dlib_rb_rectangle_width(VALUE rect)
 {
   rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
-  return LONG2NUM(rectcont->rect.width());
+  return ULONG2NUM(rectcont->rect.width());
 }
 
 extern "C" VALUE
 dlib_rb_rectangle_height(VALUE rect)
 {
   rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
-  return LONG2NUM(rectcont->rect.height());
+  return ULONG2NUM(rectcont->rect.height());
 }
 
 extern "C" VALUE
 dlib_rb_rectangle_area(VALUE rect)
 {
   rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
-  return LONG2NUM(rectcont->rect.area());
+  return ULONG2NUM(rectcont->rect.area());
 }
 
 extern "C" VALUE
