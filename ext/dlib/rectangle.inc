@@ -30,6 +30,9 @@ static const rb_data_type_t rectangle_container_data_type = {
 #endif
 };
 
+#define is_data_rectangle(obj) (RTYPEDDATA_P((obj)) && RTYPEDDATA_TYPE((obj)) == &rectangle_container_data_type)
+#define is_obj_dlib_rectangle(obj) (RB_TYPE_P((obj), T_DATA) && is_data_rectangle(obj))
+
 static rectangle_container *
 dlib_rb_rectangle_get_rectangle_container(VALUE rect)
 {
@@ -49,12 +52,18 @@ dlib_rb_rectangle_alloc(VALUE klass)
 }
 
 static VALUE
-dlib_rb_rectangle_new(dlib::rectangle const &dlib_rect)
+dlib_rb_rectangle_s_new(VALUE klass, dlib::rectangle const &dlib_rect)
 {
-  VALUE rect = dlib_rb_rectangle_alloc(cDlibRectangle);
+  VALUE rect = dlib_rb_rectangle_alloc(klass);
   rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
   rectcont->rect = dlib_rect;
   return rect;
+}
+
+static VALUE
+dlib_rb_rectangle_new(dlib::rectangle const &dlib_rect)
+{
+  return dlib_rb_rectangle_s_new(cDlibRectangle, dlib_rect);
 }
 
 static VALUE
@@ -90,6 +99,17 @@ dlib_rb_rectangle_initialize(int argc, VALUE* argv, VALUE rect)
   }
 
   return rect;
+}
+
+extern "C" VALUE
+dlib_rb_rectangle_eq(VALUE rect, VALUE other)
+{
+  rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
+  if (is_obj_dlib_rectangle(other)) {
+    rectangle_container *rectcont_other = dlib_rb_rectangle_get_rectangle_container(other);
+    return rectcont->rect == rectcont_other->rect ? Qtrue : Qfalse;
+  }
+  return Qfalse;
 }
 
 extern "C" VALUE
@@ -180,6 +200,45 @@ dlib_rb_rectangle_set_bottom(VALUE rect, VALUE val)
   return val;
 }
 
+extern "C" VALUE
+dlib_rb_rectangle_union(VALUE rect1, VALUE rect2)
+{
+  rectangle_container *rectcont1 = dlib_rb_rectangle_get_rectangle_container(rect1);
+  rectangle_container *rectcont2 = dlib_rb_rectangle_get_rectangle_container(rect2);
+  dlib::rectangle dlib_rect3 = rectcont1->rect + rectcont2->rect;
+  return dlib_rb_rectangle_s_new(CLASS_OF(rect1), dlib_rect3);
+}
+
+extern "C" VALUE
+dlib_rb_rectangle_intersect(VALUE rect1, VALUE rect2)
+{
+  rectangle_container *rectcont1 = dlib_rb_rectangle_get_rectangle_container(rect1);
+  rectangle_container *rectcont2 = dlib_rb_rectangle_get_rectangle_container(rect2);
+  dlib::rectangle dlib_rect3 = rectcont1->rect.intersect(rectcont2->rect);
+  return dlib_rb_rectangle_s_new(CLASS_OF(rect1), dlib_rect3);
+}
+
+extern "C" VALUE
+dlib_rb_rectangle_inspect(VALUE rect)
+{
+  rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
+
+  VALUE cname = rb_class_name(CLASS_OF(rect));
+  VALUE str = rb_sprintf(
+    "#<%"PRIsVALUE" (%ld, %ld)-(%ld, %ld) %lux%lu%s>",
+    cname,
+    rectcont->rect.left(),
+    rectcont->rect.top(),
+    rectcont->rect.right(),
+    rectcont->rect.bottom(),
+    rectcont->rect.width(),
+    rectcont->rect.height(),
+    (rectcont->rect.is_empty() ? " empty" : "")
+  );
+
+  return str;
+}
+
 static void
 Init_dlib_rectangle()
 {
@@ -188,6 +247,8 @@ Init_dlib_rectangle()
   rb_define_alloc_func(cDlibRectangle, dlib_rb_rectangle_alloc);
 
   rb_define_method(cDlibRectangle, "initialize", RUBY_METHOD_FUNC(dlib_rb_rectangle_initialize), -1);
+
+  rb_define_method(cDlibRectangle, "==", RUBY_METHOD_FUNC(dlib_rb_rectangle_eq), 1);
 
   rb_define_method(cDlibRectangle, "left", RUBY_METHOD_FUNC(dlib_rb_rectangle_left), 0);
   rb_define_method(cDlibRectangle, "top", RUBY_METHOD_FUNC(dlib_rb_rectangle_top), 0);
@@ -202,4 +263,9 @@ Init_dlib_rectangle()
   rb_define_method(cDlibRectangle, "top=", RUBY_METHOD_FUNC(dlib_rb_rectangle_set_top), 1);
   rb_define_method(cDlibRectangle, "right=", RUBY_METHOD_FUNC(dlib_rb_rectangle_set_right), 1);
   rb_define_method(cDlibRectangle, "bottom=", RUBY_METHOD_FUNC(dlib_rb_rectangle_set_bottom), 1);
+
+  rb_define_method(cDlibRectangle, "+", RUBY_METHOD_FUNC(dlib_rb_rectangle_union), 1);
+  rb_define_method(cDlibRectangle, "intersect", RUBY_METHOD_FUNC(dlib_rb_rectangle_intersect), 1);
+
+  rb_define_method(cDlibRectangle, "inspect", RUBY_METHOD_FUNC(dlib_rb_rectangle_inspect), 0);
 }

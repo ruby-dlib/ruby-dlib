@@ -89,6 +89,32 @@ module Dlib
         expect(rectangle(4, 4)).not_to be_empty
         expect(rectangle()).to be_empty
       end
+
+      specify 'There are different empty rectangles not to be equal' do
+        r1 = rectangle(1, 1, 3, 3).intersect(rectangle())
+        r2 = rectangle()
+        expect(r1).not_to eq(r2)
+      end
+    end
+
+    describe '#+' do
+      it 'returns union of two rectangles' do
+        expect(rectangle(1, 1, 3, 3) + rectangle(2, 2, 5, 5)).to eq(rectangle(1, 1, 5, 5))
+        expect(rectangle(1, 2, 3, 5) + rectangle(2, 1, 5, 3)).to eq(rectangle(1, 1, 5, 5))
+        expect(rectangle(1, 1, 3, 3) + rectangle()).to eq(rectangle(1, 1, 3, 3))
+        expect(rectangle() + rectangle(1, 1, 3, 3)).to eq(rectangle(1, 1, 3, 3))
+        expect(rectangle() + rectangle()).to eq(rectangle())
+      end
+    end
+
+    describe '#intersect' do
+      it 'returns intersection of two rectangles' do
+        expect(rectangle(1, 1, 5, 5).intersect(rectangle(2, 2, 3, 3))).to eq(rectangle(2, 2, 3, 3))
+        expect(rectangle(1, 1, 3, 3).intersect(rectangle(2, 2, 5, 5))).to eq(rectangle(2, 2, 3, 3))
+        expect(rectangle(1, 1, 3, 3).intersect(rectangle())).to be_empty
+        expect(rectangle().intersect(rectangle(1, 1, 3, 3))).to be_empty
+        expect(rectangle().intersect(rectangle())).to be_empty
+      end
     end
   end
 end
