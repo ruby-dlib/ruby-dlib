@@ -82,5 +82,13 @@ module Dlib
         expect(rectangle().area).to eq(0)
       end
     end
+
+    describe '#empty?' do
+      it 'returns collect values' do
+        expect(rectangle(1, 2, 3, 4)).not_to be_empty
+        expect(rectangle(4, 4)).not_to be_empty
+        expect(rectangle()).to be_empty
+      end
+    end
   end
 end

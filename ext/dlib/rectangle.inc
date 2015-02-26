@@ -142,6 +142,13 @@ dlib_rb_rectangle_area(VALUE rect)
 }
 
 extern "C" VALUE
+dlib_rb_rectangle_is_empty(VALUE rect)
+{
+  rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
+  return rectcont->rect.is_empty() ? Qtrue : Qfalse;
+}
+
+extern "C" VALUE
 dlib_rb_rectangle_set_left(VALUE rect, VALUE val)
 {
   rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
@@ -189,6 +196,7 @@ Init_dlib_rectangle()
   rb_define_method(cDlibRectangle, "width", RUBY_METHOD_FUNC(dlib_rb_rectangle_width), 0);
   rb_define_method(cDlibRectangle, "height", RUBY_METHOD_FUNC(dlib_rb_rectangle_height), 0);
   rb_define_method(cDlibRectangle, "area", RUBY_METHOD_FUNC(dlib_rb_rectangle_area), 0);
+  rb_define_method(cDlibRectangle, "empty?", RUBY_METHOD_FUNC(dlib_rb_rectangle_is_empty), 0);
 
   rb_define_method(cDlibRectangle, "left=", RUBY_METHOD_FUNC(dlib_rb_rectangle_set_left), 1);
   rb_define_method(cDlibRectangle, "top=", RUBY_METHOD_FUNC(dlib_rb_rectangle_set_top), 1);
