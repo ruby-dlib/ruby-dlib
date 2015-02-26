@@ -120,6 +120,38 @@ dlib_rb_rectangle_bottom(VALUE rect)
   return LONG2NUM(rectcont->rect.bottom());
 }
 
+extern "C" VALUE
+dlib_rb_rectangle_set_left(VALUE rect, VALUE val)
+{
+  rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
+  rectcont->rect.set_left(NUM2LONG(val));
+  return val;
+}
+
+extern "C" VALUE
+dlib_rb_rectangle_set_top(VALUE rect, VALUE val)
+{
+  rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
+  rectcont->rect.set_top(NUM2LONG(val));
+  return val;
+}
+
+extern "C" VALUE
+dlib_rb_rectangle_set_right(VALUE rect, VALUE val)
+{
+  rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
+  rectcont->rect.set_right(NUM2LONG(val));
+  return val;
+}
+
+extern "C" VALUE
+dlib_rb_rectangle_set_bottom(VALUE rect, VALUE val)
+{
+  rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
+  rectcont->rect.set_bottom(NUM2LONG(val));
+  return val;
+}
+
 static void
 Init_dlib_rectangle()
 {
@@ -133,4 +165,9 @@ Init_dlib_rectangle()
   rb_define_method(cDlibRectangle, "top", RUBY_METHOD_FUNC(dlib_rb_rectangle_top), 0);
   rb_define_method(cDlibRectangle, "right", RUBY_METHOD_FUNC(dlib_rb_rectangle_right), 0);
   rb_define_method(cDlibRectangle, "bottom", RUBY_METHOD_FUNC(dlib_rb_rectangle_bottom), 0);
+
+  rb_define_method(cDlibRectangle, "left=", RUBY_METHOD_FUNC(dlib_rb_rectangle_set_left), 1);
+  rb_define_method(cDlibRectangle, "top=", RUBY_METHOD_FUNC(dlib_rb_rectangle_set_top), 1);
+  rb_define_method(cDlibRectangle, "right=", RUBY_METHOD_FUNC(dlib_rb_rectangle_set_right), 1);
+  rb_define_method(cDlibRectangle, "bottom=", RUBY_METHOD_FUNC(dlib_rb_rectangle_set_bottom), 1);
 }

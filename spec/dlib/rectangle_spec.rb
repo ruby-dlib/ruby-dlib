@@ -2,10 +2,10 @@ require 'spec_helper'
 
 module Dlib
   describe Rectangle do
+    subject { described_class.new(1, 2, 3, 4) }
+
     describe '#initialize' do
       context 'with left, top, right, and bottom positions' do
-        subject { described_class.new(1, 2, 3, 4) }
-
         it 'has correct values' do
           expect(subject.left).to   eq(1)
           expect(subject.top).to    eq(2)
@@ -34,6 +34,34 @@ module Dlib
           expect(subject.right).to  eq(-1)
           expect(subject.bottom).to eq(-1)
         end
+      end
+    end
+
+    describe '#left=' do
+      it 'set left value' do
+        subject.left = 42
+        expect(subject.left).to eq(42)
+      end
+    end
+
+    describe '#top=' do
+      it 'set top value' do
+        subject.top = 42
+        expect(subject.top).to eq(42)
+      end
+    end
+
+    describe '#right=' do
+      it 'set right value' do
+        subject.right = 42
+        expect(subject.right).to eq(42)
+      end
+    end
+
+    describe '#bottom=' do
+      it 'set bottom value' do
+        subject.bottom = 42
+        expect(subject.bottom).to eq(42)
       end
     end
   end
