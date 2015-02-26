@@ -135,6 +135,13 @@ dlib_rb_rectangle_height(VALUE rect)
 }
 
 extern "C" VALUE
+dlib_rb_rectangle_area(VALUE rect)
+{
+  rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
+  return LONG2NUM(rectcont->rect.area());
+}
+
+extern "C" VALUE
 dlib_rb_rectangle_set_left(VALUE rect, VALUE val)
 {
   rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
@@ -181,6 +188,7 @@ Init_dlib_rectangle()
   rb_define_method(cDlibRectangle, "bottom", RUBY_METHOD_FUNC(dlib_rb_rectangle_bottom), 0);
   rb_define_method(cDlibRectangle, "width", RUBY_METHOD_FUNC(dlib_rb_rectangle_width), 0);
   rb_define_method(cDlibRectangle, "height", RUBY_METHOD_FUNC(dlib_rb_rectangle_height), 0);
+  rb_define_method(cDlibRectangle, "area", RUBY_METHOD_FUNC(dlib_rb_rectangle_area), 0);
 
   rb_define_method(cDlibRectangle, "left=", RUBY_METHOD_FUNC(dlib_rb_rectangle_set_left), 1);
   rb_define_method(cDlibRectangle, "top=", RUBY_METHOD_FUNC(dlib_rb_rectangle_set_top), 1);

@@ -2,7 +2,11 @@ require 'spec_helper'
 
 module Dlib
   describe Rectangle do
-    subject { described_class.new(1, 2, 3, 4) }
+    def rectangle(*args)
+      described_class.new(*args)
+    end
+
+    subject { rectangle(1, 2, 3, 4) }
 
     describe '#initialize' do
       context 'with left, top, right, and bottom positions' do
@@ -17,7 +21,7 @@ module Dlib
       end
 
       context 'with width and height' do
-        subject { described_class.new(2, 3) }
+        subject { rectangle(2, 3) }
 
         it 'has correct values' do
           expect(subject.left).to   eq(0)
@@ -30,7 +34,7 @@ module Dlib
       end
 
       context 'without arguments' do
-        subject { described_class.new() }
+        subject { rectangle() }
 
         it 'has correct values' do
           expect(subject.left).to   eq(0)
@@ -68,6 +72,14 @@ module Dlib
       it 'set bottom value' do
         subject.bottom = 42
         expect(subject.bottom).to eq(42)
+      end
+    end
+
+    describe '#area' do
+      it 'returns collect values' do
+        expect(rectangle(1, 2, 3, 4).area).to eq(9)
+        expect(rectangle(4, 4).area).to eq(16)
+        expect(rectangle().area).to eq(0)
       end
     end
   end
