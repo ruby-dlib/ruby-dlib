@@ -18,4 +18,6 @@ $defs << '-DDLIB_PNG_SUPPORT'
 $defs << '-DDLIB_NO_GUI_SUPPORT'
 $CPPFLAGS << " -I#{DLIB_SRCDIR}"
 
+have_func('rb_get_kwargs')
+
 create_makefile('dlib')

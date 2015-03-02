@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+#include "missing.h"
+
 static VALUE mDlib;
 
 static VALUE eDlibError;

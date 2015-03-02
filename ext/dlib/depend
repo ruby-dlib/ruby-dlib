@@ -8,5 +8,6 @@ DLIB_FUNCTIONS = \
 
 OBJS += $(DLIB_OJBS)
 
-dlib.o: dlib.cpp $(DLIB_FUNCTIONS)
+dlib.o: dlib.cpp $(DLIB_FUNCTIONS) missing.h
 dlib_deps.o: dlib_deps.cpp
+missing.o: missing.c missing.h
