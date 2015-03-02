@@ -10,11 +10,7 @@ extern "C" {
 #endif
 #endif
 
-
-#ifndef HAVE_RB_GET_KWARGS
 int rb_get_kwargs(VALUE keyword_hash, const ID *table, int required, int optional, VALUE *values);
-#endif
-
 
 #if defined(__cplusplus)
 #if 0
