@@ -13,6 +13,7 @@ have_library('jpeg', 'jpeg_std_error') or abort
 have_header('png.h') or abort
 have_library('png', 'png_sig_cmp') or abort
 
+$defs << '-DPNG_SKIP_SETJMP_CHECK'
 $defs << '-DDLIB_JPEG_SUPPORT'
 $defs << '-DDLIB_PNG_SUPPORT'
 $defs << '-DDLIB_NO_GUI_SUPPORT'
