@@ -4,6 +4,7 @@ DLIB_FUNCTIONS = \
 	geometry.inc \
 	rectangle.inc \
 	image.inc \
+	detector.inc \
 	find_candidate_object_locations.inc
 
 OBJS += $(DLIB_OJBS)

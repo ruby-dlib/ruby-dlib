@@ -15,6 +15,8 @@ static VALUE eDlibError;
 
 #include "image.inc"
 
+#include "detector.inc"
+
 #include "find_candidate_object_locations.inc"
 
 extern "C" void
@@ -28,7 +30,8 @@ Init_dlib(void)
 
   Init_dlib_geometry();
   Init_dlib_image();
-
+  Init_dlib_detector();
+  
   rb_define_module_function(
       mDlib,
       "find_candidate_object_locations",
