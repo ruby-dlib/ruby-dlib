@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'mkmf'
 
-DLIB_VERSION = '18.13'
+DLIB_VERSION = '19.0'
 DLIB_SRCDIR = File.expand_path("../../dlib-#{DLIB_VERSION}", __FILE__)
 
 dir_config('libjpeg')
