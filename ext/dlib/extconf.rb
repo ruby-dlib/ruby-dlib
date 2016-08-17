@@ -17,6 +17,9 @@ $defs << '-DPNG_SKIP_SETJMP_CHECK'
 $defs << '-DDLIB_JPEG_SUPPORT'
 $defs << '-DDLIB_PNG_SUPPORT'
 $defs << '-DDLIB_NO_GUI_SUPPORT'
+$defs << '-DNO_DEBUG'
+$defs << '-O3'
+$defs << '-march=native'
 $CPPFLAGS << " -I#{DLIB_SRCDIR}"
 
 have_func('rb_get_kwargs')
