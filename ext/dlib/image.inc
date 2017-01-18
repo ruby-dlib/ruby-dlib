@@ -1,6 +1,7 @@
 // vim: ft=cpp
 
 #include <dlib/image_io.h>
+#include <dlib/image_transforms.h>
 
 static VALUE cDlibImage;
 
@@ -135,6 +136,14 @@ dlib_rb_image_draw_rectangle(int argc, VALUE *argv, VALUE image)
   return image;
 }
 
+extern "C" VALUE
+dlib_rb_image_pyramid_up(VALUE image) {
+  rgb_image_container *image_container = dlib_rb_image_get_rgb_image_container(image);
+  pyramid_up(image_container->image);
+  return image;
+}
+
+
 static void
 Init_dlib_image()
 {
@@ -147,6 +156,8 @@ Init_dlib_image()
 
   rb_define_method(cDlibImage, "nr", RUBY_METHOD_FUNC(dlib_rb_image_nr), 0);
   rb_define_method(cDlibImage, "nc", RUBY_METHOD_FUNC(dlib_rb_image_nc), 0);
+
+  rb_define_method(cDlibImage, "pyramid_up", RUBY_METHOD_FUNC(dlib_rb_image_pyramid_up), 0);
 
   rb_define_method(cDlibImage, "save_jpeg", RUBY_METHOD_FUNC(dlib_rb_image_save_jpeg), 1);
 
