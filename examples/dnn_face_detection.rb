@@ -1,6 +1,8 @@
 require 'dlib'
 
 image_file = ARGV[0] || 'ext/dlib-19.2/examples/faces/2009_004587.jpg'
+
+# you can download model file from http://dlib.net/files/mmod_human_face_detector.dat.bz2
 model_file = 'mmod_human_face_detector.dat'
 detector = Dlib::DNNFaceDetector.new(model_file)
 
