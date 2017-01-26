@@ -74,11 +74,13 @@ dlib_rb_dnn_fd_initialize(VALUE dnn_fd, VALUE filename)
 }
 
 extern "C" VALUE
-dlib_rb_dnn_fd_detect(VALUE dnn_fd, VALUE matrix)
+dlib_rb_dnn_fd_detect(VALUE dnn_fd, VALUE image)
 {
   dnn_fd_container *dnn_fdcont = dlib_rb_dnn_fd_get_dnn_fd_container(dnn_fd);
-  rgb_matrix_container *matrix_container = dlib_rb_matrix_get_rgb_matrix_container(matrix);
-  auto detections = dnn_fdcont->net(matrix_container->matrix);
+  rgb_image_container *image_container = dlib_rb_image_get_rgb_image_container(image);
+  dlib::matrix<dlib::rgb_pixel> matrix;
+  assign_image(matrix, image_container->image);
+  auto detections = dnn_fdcont->net(matrix);
 
   VALUE result = rb_ary_new_capa(detections.size());
   for (auto&& detection : detections) {
