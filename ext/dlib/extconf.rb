@@ -20,7 +20,7 @@ $defs << '-DDLIB_NO_GUI_SUPPORT'
 $defs << '-DNO_DEBUG'
 $defs << '-O3'
 $defs << '-march=native'
-$CPPFLAGS << " -I#{DLIB_SRCDIR}"
+$CPPFLAGS << " -I#{DLIB_SRCDIR} -std=c++11"
 
 have_func('rb_get_kwargs')
 

@@ -19,6 +19,8 @@ static VALUE eDlibError;
 
 #include "find_candidate_object_locations.inc"
 
+#include "dnn_detector.inc"
+
 extern "C" void
 Init_dlib(void)
 {
@@ -31,7 +33,8 @@ Init_dlib(void)
   Init_dlib_geometry();
   Init_dlib_image();
   Init_dlib_detector();
-  
+  Init_dlib_dnn_detector();
+
   rb_define_module_function(
       mDlib,
       "find_candidate_object_locations",
