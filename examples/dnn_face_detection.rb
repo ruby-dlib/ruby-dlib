@@ -1,6 +1,6 @@
 require 'dlib'
 
-image_file = ARGV[0] || 'ext/dlib-19.0/examples/faces/2009_004587.jpg'
+image_file = ARGV[0] || 'ext/dlib-19.2/examples/faces/2009_004587.jpg'
 model_file = 'mmod_human_face_detector.dat'
 detector = Dlib::DNNFaceDetector.new(model_file)
 

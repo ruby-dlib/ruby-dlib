@@ -1,6 +1,6 @@
 require 'dlib'
 
-image_file = ARGV[0] || 'ext/dlib-19.0/examples/faces/2009_004587.jpg'
+image_file = ARGV[0] || 'ext/dlib-19.2/examples/faces/2009_004587.jpg'
 img = Dlib::Image.load(image_file)
 detector = Dlib::FrontalFaceDetector.new
 
