@@ -1,4 +1,4 @@
-DLIB_SRCDIR = ../dlib-19.0
+DLIB_SRCDIR = ../dlib-19.2
 
 DLIB_FUNCTIONS = \
 	geometry.inc \
