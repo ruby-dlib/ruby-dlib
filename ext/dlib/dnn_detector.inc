@@ -19,6 +19,8 @@ using net_type = loss_mmod<con<1,9,9,1,1,rcon5<rcon5<rcon5<downsampler<input_rgb
 
 static VALUE cDlibDNNFaceDetector;
 
+static VALUE eDlibDNNFaceDetectorBadAllocationError;
+
 struct dnn_fd_container {
   net_type net;
 };
@@ -80,7 +82,13 @@ dlib_rb_dnn_fd_detect(VALUE dnn_fd, VALUE image)
   rgb_image_container *image_container = dlib_rb_image_get_rgb_image_container(image);
   dlib::matrix<dlib::rgb_pixel> matrix;
   assign_image(matrix, image_container->image);
-  auto detections = dnn_fdcont->net(matrix);
+
+  std::vector<dlib::mmod_rect> detections;
+  try {
+    detections = dnn_fdcont->net(matrix);
+  } catch (std::bad_alloc& error) {
+    rb_raise(eDlibDNNFaceDetectorBadAllocationError, "Bad allocation memory while inferencing");
+  }
 
   VALUE result = rb_ary_new_capa(detections.size());
   for (auto&& detection : detections) {
@@ -93,6 +101,8 @@ static void
 Init_dlib_dnn_detector()
 {
   cDlibDNNFaceDetector = rb_define_class_under(mDlib, "DNNFaceDetector", rb_cData);
+
+  eDlibDNNFaceDetectorBadAllocationError = rb_define_class_under(cDlibDNNFaceDetector, "BadAllocationError", eDlibError);
 
   rb_define_alloc_func(cDlibDNNFaceDetector, dlib_rb_dnn_fd_alloc);
 
