@@ -76,23 +76,64 @@ dlib_rb_dnn_fd_initialize(VALUE dnn_fd, VALUE filename)
 }
 
 extern "C" VALUE
-dlib_rb_dnn_fd_detect(VALUE dnn_fd, VALUE image)
+dlib_rb_dnn_fd_detect_in_batches(VALUE dnn_fd, VALUE images)
 {
   dnn_fd_container *dnn_fdcont = dlib_rb_dnn_fd_get_dnn_fd_container(dnn_fd);
-  rgb_image_container *image_container = dlib_rb_image_get_rgb_image_container(image);
-  dlib::matrix<dlib::rgb_pixel> matrix;
-  assign_image(matrix, image_container->image);
 
-  std::vector<dlib::mmod_rect> detections;
+  std::vector<dlib::matrix<dlib::rgb_pixel>> matrixes;
+  for (long i = 0; i < RARRAY_LEN(images); i++) {
+    VALUE image = RARRAY_AREF(images, i);
+    rgb_image_container *image_container = dlib_rb_image_get_rgb_image_container(image);
+
+    dlib::matrix<dlib::rgb_pixel> matrix;
+    assign_image(matrix, image_container->image);
+    matrixes.push_back(matrix);
+  }
+
+  std::vector<std::vector<dlib::mmod_rect>> detections_in_batches;
   try {
-    detections = dnn_fdcont->net(matrix);
+    detections_in_batches = dnn_fdcont->net(matrixes);
   } catch (std::bad_alloc& error) {
     rb_raise(eDlibDNNFaceDetectorBadAllocationError, "Bad allocation memory while inferencing");
   }
 
-  VALUE result = rb_ary_new_capa(detections.size());
-  for (auto&& detection : detections) {
-    rb_ary_push(result, dlib_rb_rectangle_new(detection.rect));
+  VALUE result_all = rb_ary_new_capa(detections_in_batches.size());
+  for (auto&& detections: detections_in_batches) {
+    VALUE result = rb_ary_new_capa(detections.size());
+    for (auto&& detection : detections) {
+      rb_ary_push(result, dlib_rb_rectangle_new(detection.rect));
+    }
+    rb_ary_push(result_all, result);
+  }
+  return result_all;
+}
+
+extern "C" VALUE
+dlib_rb_dnn_fd_detect_one(VALUE dnn_fd, VALUE image) {
+  VALUE images = rb_ary_new_capa(1);
+  rb_ary_push(images, image);
+  VALUE results = dlib_rb_dnn_fd_detect_in_batches(dnn_fd, images);
+  VALUE result = rb_ary_pop(results);
+  return result;
+}
+
+extern "C" VALUE
+dlib_rb_dnn_fd_detect(VALUE dnn_fd, VALUE obj)
+{
+  VALUE result;
+  switch (TYPE(obj)) {
+  case T_ARRAY:
+    result = dlib_rb_dnn_fd_detect_in_batches(dnn_fd, obj);
+    break;
+  case T_DATA:
+    if (rb_obj_is_instance_of(obj, cDlibImage) != Qtrue) {
+      rb_raise(rb_eTypeError, "must give Dlib::Image or array of Dlib::Image");
+    }
+    result = dlib_rb_dnn_fd_detect_one(dnn_fd, obj);
+    break;
+  default:
+    rb_raise(rb_eTypeError, "must give Dlib::Image or array of Dlib::Image");
+    break;
   }
   return result;
 }
