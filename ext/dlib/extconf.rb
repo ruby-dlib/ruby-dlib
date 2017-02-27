@@ -19,9 +19,16 @@ $defs << '-DDLIB_PNG_SUPPORT'
 $defs << '-DDLIB_NO_GUI_SUPPORT'
 $defs << '-DNO_DEBUG'
 $defs << '-O3'
-$defs << '-march=native'
 $CPPFLAGS << " -I#{DLIB_SRCDIR} -std=c++11"
+$ARCH_FLAG = '-march=native'
+
+use_cuda = File.exist?('/usr/local/cuda/lib64/libcudart.so')
+if use_cuda
+  $defs << '-DDLIB_USE_CUDA'
+  $CPPFLAGS << " -I/usr/local/cuda/include"
+  $LIBS << " -lcudart -lcurand -lcublas -lcudnn"
+  $LIBPATH << "/usr/local/cuda/lib64"
+end
 
 have_func('rb_get_kwargs')
-
 create_makefile('dlib')
