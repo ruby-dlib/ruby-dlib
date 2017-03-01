@@ -24,8 +24,10 @@
 
 // Stuff that requires C++11
 #include "../dnn/cpu_dlib.cpp"
-#include "../dnn/tensor_tools.cpp"
 
+#ifndef DLIB_USE_CUDA
+#include "../dnn/tensor_tools.cpp"
+#endif
 
 #ifndef DLIB_ISO_CPP_ONLY
 // Code that depends on OS specific APIs
