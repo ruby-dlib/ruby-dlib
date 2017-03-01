@@ -1,4 +1,4 @@
-DLIB_SRCDIR = $(srcdir)/../dlib-19.2
+DLIB_SRCDIR = $(srcdir)/../dlib-19.3
 DLIB_FUNCTIONS = \
 	geometry.inc \
 	rectangle.inc \
