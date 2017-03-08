@@ -21,6 +21,8 @@ static VALUE eDlibError;
 
 #include "dnn_detector.inc"
 
+#include "cuda.inc"
+
 extern "C" void
 Init_dlib(void)
 {
@@ -34,6 +36,7 @@ Init_dlib(void)
   Init_dlib_image();
   Init_dlib_detector();
   Init_dlib_dnn_detector();
+  Init_dlib_cuda();
 
   rb_define_module_function(
       mDlib,

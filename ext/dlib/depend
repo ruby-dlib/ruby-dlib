@@ -5,7 +5,9 @@ DLIB_FUNCTIONS = \
 	image.inc \
 	detector.inc \
 	find_candidate_object_locations.inc \
-	dnn_detector.inc
+	dnn_detector.inc \
+	cuda.inc
+OBJS += $(DLIB_OJBS)
 
 NVCC_RESULT := $(shell which nvcc 2> NULL)
 NVCC_TEST := $(notdir $(NVCC_RESULT))
@@ -27,7 +29,6 @@ DLIB_CUDA_OBJS = $(DLIB_SRCDIR)/dlib/dnn/curand_dlibapi.o \
 	$(DLIB_SRCDIR)/dlib/dnn/cuda_dlib.o
 
 SRCS += $(DLIB_CUDA_SRCS)
-OBJS += $(DLIB_OJBS)
 OBJS += $(DLIB_CUDA_OBJS)
 
 .SUFFIXES: .c .m .cc .mm .cxx .cpp .o .S .cu
