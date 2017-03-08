@@ -6,8 +6,8 @@ require 'dlib/version'
 Gem::Specification.new do |spec|
   spec.name          = "dlib"
   spec.version       = Dlib::VERSION
-  spec.authors       = ["Kenta Murata"]
-  spec.email         = ["mrkn@mrkn.jp"]
+  spec.authors       = ["Kenta Murata", "Satoshi Namai"]
+  spec.email         = ["mrkn@mrkn.jp", "s.namai.09@gmail.com"]
   spec.summary       = %q{Ruby bindings of dlib C++ library.}
   spec.description   = %q{Ruby bindings of dlib C++ library.}
   spec.homepage      = ""

@@ -1,13 +1,44 @@
-DLIB_SRCDIR = ../dlib-18.13
-
+DLIB_SRCDIR = $(srcdir)/../dlib-19.3
 DLIB_FUNCTIONS = \
 	geometry.inc \
 	rectangle.inc \
 	image.inc \
-	find_candidate_object_locations.inc
-
+	detector.inc \
+	find_candidate_object_locations.inc \
+	dnn_detector.inc \
+	cuda.inc
 OBJS += $(DLIB_OJBS)
 
-dlib.o: dlib.cpp $(DLIB_FUNCTIONS) missing.h
+NVCC_RESULT := $(shell which nvcc 2> NULL)
+NVCC_TEST := $(notdir $(NVCC_RESULT))
+ifeq ($(NVCC_TEST),nvcc)
+CUDA_NVCC = nvcc
+CUDA_FLAGS = $(CPPFLAGS) -I /usr/local/cuda/include -arch=sm_30 -D__STRICT_ANSI__ -D_MWAITXINTRIN_H_INCLUDED -D_FORCE_INLINES
+DLIB_CUDA_SRCS = $(DLIB_SRCDIR)/dlib/dnn/curand_dlibapi.cpp \
+	$(DLIB_SRCDIR)/dlib/dnn/cudnn_dlibapi.cpp \
+	$(DLIB_SRCDIR)/dlib/dnn/cublas_dlibapi.cpp \
+	$(DLIB_SRCDIR)/dlib/dnn/tensor_tools.cpp \
+	$(DLIB_SRCDIR)/dlib/dnn/gpu_data.cpp \
+	$(DLIB_SRCDIR)/dlib/dnn/cuda_dlib.cu
+
+DLIB_CUDA_OBJS = $(DLIB_SRCDIR)/dlib/dnn/curand_dlibapi.o \
+	$(DLIB_SRCDIR)/dlib/dnn/cudnn_dlibapi.o \
+	$(DLIB_SRCDIR)/dlib/dnn/cublas_dlibapi.o \
+	$(DLIB_SRCDIR)/dlib/dnn/tensor_tools.o \
+	$(DLIB_SRCDIR)/dlib/dnn/gpu_data.o \
+	$(DLIB_SRCDIR)/dlib/dnn/cuda_dlib.o
+
+SRCS += $(DLIB_CUDA_SRCS)
+OBJS += $(DLIB_CUDA_OBJS)
+
+.SUFFIXES: .c .m .cc .mm .cxx .cpp .o .S .cu
+.cu.o:
+	$(ECHO) compiling $@
+	$(Q) $(CUDA_NVCC) $(CUDA_FLAGS) -Xcompiler -fPIC -c -o $@ $<
+endif
+
 dlib_deps.o: dlib_deps.cpp
+
+dlib.o: dlib.cpp $(DLIB_FUNCTIONS) missing.h $(DLIB_CUDA_OBJS)
+
 missing.o: missing.c missing.h

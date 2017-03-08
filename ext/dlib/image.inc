@@ -1,6 +1,7 @@
 // vim: ft=cpp
 
 #include <dlib/image_io.h>
+#include <dlib/image_transforms.h>
 
 static VALUE cDlibImage;
 
