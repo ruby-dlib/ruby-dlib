@@ -1,6 +1,6 @@
 require 'dlib'
 
-image_file = ARGV[0] || 'ext/dlib-19.3/examples/faces/2009_004587.jpg'
+image_file = ARGV[0] || 'ext/dlib-19.4/examples/faces/2009_004587.jpg'
 
 # you can download model file from http://dlib.net/files/mmod_human_face_detector.dat.bz2
 model_file = 'mmod_human_face_detector.dat'
