@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["mrkn@mrkn.jp", "s.namai.09@gmail.com"]
   spec.summary       = %q{Ruby bindings of dlib C++ library.}
   spec.description   = %q{Ruby bindings of dlib C++ library.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/ruby-dlib/ruby-dlib"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
