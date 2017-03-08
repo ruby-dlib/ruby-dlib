@@ -106,14 +106,14 @@ dlib_rb_image_draw_rectangle(int argc, VALUE *argv, VALUE image)
   rb_scan_args(argc, argv, "21", &rect, &pixel, &thickness_v);
 
   if (!is_obj_dlib_rectangle(rect)) {
-    rb_raise(rb_eTypeError, "Invalid rectangle is given: %"PRIsVALUE, rect);
+    rb_raise(rb_eTypeError, "Invalid rectangle is given: %" PRIsVALUE, rect);
   }
 
   rectangle_container *rectcont = dlib_rb_rectangle_get_rectangle_container(rect);
 
   Check_Type(pixel, T_ARRAY);
   if (RARRAY_LEN(pixel) != 3) {
-    rb_raise(rb_eArgError, "Invalid pixel value is given: %"PRIsVALUE, pixel);
+    rb_raise(rb_eArgError, "Invalid pixel value is given: %" PRIsVALUE, pixel);
   }
 
   unsigned char red   = static_cast<unsigned char>(NUM2UINT(RARRAY_AREF(pixel, 0)));
