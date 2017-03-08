@@ -1,6 +1,6 @@
 require 'dlib'
 
-image_file = ARGV[0] || 'ext/dlib-19.0/examples/faces/2009_004587.jpg'
+image_file = ARGV[0] || 'ext/dlib-19.3/examples/faces/2009_004587.jpg'
 img = Dlib::Image.load(image_file)
 
 rects = Dlib.find_candidate_object_locations(img, min_size: 500)
