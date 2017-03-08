@@ -24,7 +24,11 @@
 
 // Stuff that requires C++11
 #include "../dnn/cpu_dlib.cpp"
-#include "../dnn/tensor_tools.cpp"
+
+// Patch for ruby-dlib
+#ifndef DLIB_USE_CUDA
+  #include "../dnn/tensor_tools.cpp"
+#endif
 
 
 #ifndef DLIB_ISO_CPP_ONLY
@@ -88,4 +92,3 @@
 #define DLIB_ALL_SOURCE_END
 
 #endif // DLIB_ALL_SOURCe_
-
