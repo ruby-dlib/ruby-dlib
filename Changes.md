@@ -3,6 +3,12 @@
 At first, you can see original Release notes.
 http://dlib.net/release_notes.html
 
+## 1.1.1 (use dlib 19.4)
+
+### Others
+
+* fix typo
+
 ## 1.1.0 (use dlib 19.4)
 
 ### Library
