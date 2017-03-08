@@ -225,7 +225,7 @@ dlib_rb_rectangle_inspect(VALUE rect)
 
   VALUE cname = rb_class_name(CLASS_OF(rect));
   VALUE str = rb_sprintf(
-    "#<%"PRIsVALUE" (%ld, %ld)-(%ld, %ld) %lux%lu%s>",
+    "#<%" PRIsVALUE" (%ld, %ld)-(%ld, %ld) %lux%lu%s>",
     cname,
     rectcont->rect.left(),
     rectcont->rect.top(),
