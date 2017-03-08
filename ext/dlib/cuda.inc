@@ -69,13 +69,13 @@ Init_dlib_cuda()
 
   eDlibCudaNotAvailableError = rb_define_class_under(cDlibCuda, "CudaNotAvailableError", eDlibError);
 
-  rb_define_singleton_method(cDlibCuda, "availbale?", RUBY_METHOD_FUNC(dlib_rb_cuda_check_availability), 0);
+  rb_define_singleton_method(cDlibCuda, "available?", RUBY_METHOD_FUNC(dlib_rb_cuda_check_availability), 0);
 
   rb_define_singleton_method(cDlibCuda, "set_device", RUBY_METHOD_FUNC(dlib_rb_cuda_set_device), 1);
-  
+
   rb_define_singleton_method(cDlibCuda, "get_device", RUBY_METHOD_FUNC(dlib_rb_cuda_get_device), 0);
 
   rb_define_singleton_method(cDlibCuda, "get_device_name", RUBY_METHOD_FUNC(dlib_rb_cuda_get_device_name), 1);
-  
+
   rb_define_singleton_method(cDlibCuda, "get_num_devices", RUBY_METHOD_FUNC(dlib_rb_cuda_get_num_devices), 0);
 }
