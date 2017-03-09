@@ -38,6 +38,23 @@ Or install it yourself as:
 See examples directory.
 [https://github.com/ruby-dlib/ruby-dlib/tree/master/examples](https://github.com/ruby-dlib/ruby-dlib/tree/master/examples)
 
+## Face Detector Comparison
+
+|                   | CPU | GPU | recall rate | precision rate |
+|-------------------|-----|-----|-------------|----------------|
+| opencv haar based |  😄  |  -  |     🤔       |       🤔        |
+| dlib hog based *1 |  😄  |  -  |     😄       |       😻        |
+| dlib dnn based *2 |  🤔  |  😄  |     😂       |       😻        |
+
+1. http://blog.dlib.net/2014/02/dlib-186-released-make-your-own-object.html
+2. http://blog.dlib.net/2016/10/easily-create-high-quality-object.html
+
+
+demonstrate movie by dlib's original author
+
+
+[![](https://img.youtube.com/vi/LsK0hzcEyHI/0.jpg)](http://www.youtube.com/watch?v=LsK0hzcEyHI "Click to play on Youtube.com")
+
 ## Contributing
 
 1. Fork it ( https://github.com/mrkn/ruby-dlib/fork )
