@@ -3,6 +3,12 @@
 At first, you can see original Release notes.
 http://dlib.net/release_notes.html
 
+## 1.1.3 (use dlib 19.4)
+
+### Bug fixes
+
+* Fix compile option for cuda env
+
 ## 1.1.2 (use dlib 19.4)
 
 ### Bug fixes
