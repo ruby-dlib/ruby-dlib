@@ -4,6 +4,21 @@ Ruby binding of [dlib C++ library](http://dlib.net/).
 
 ## Installation
 
+`dlib` depends libjpeg and libpng. So, you should install libraries at first.
+
+**Mac**
+```
+$ brew install jpeg libpng
+```
+
+**Ubuntu 16.04**
+```
+$ apt-get install libjpeg8-dev libpng12-dev
+```
+
+**If you want to use DNN based face detector, you would have to install CUDA SDKs.**
+**Please read this page.** http://docs.nvidia.com/cuda/#axzz4anGdXQuB
+
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -21,6 +36,7 @@ Or install it yourself as:
 ## Usage
 
 See examples directory.
+[https://github.com/ruby-dlib/ruby-dlib/tree/master/examples](https://github.com/ruby-dlib/ruby-dlib/tree/master/examples)
 
 ## Contributing
 
