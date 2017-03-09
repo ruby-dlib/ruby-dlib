@@ -3,9 +3,15 @@
 At first, you can see original Release notes.
 http://dlib.net/release_notes.html
 
+## 1.1.2 (use dlib 19.4)
+
+### Bug fixes
+
+* Fix build path
+
 ## 1.1.1 (use dlib 19.4)
 
-### Others
+### Bug fixes
 
 * fix typo
 
