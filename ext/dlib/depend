@@ -13,7 +13,7 @@ NVCC_RESULT := $(shell which nvcc 2> NULL)
 NVCC_TEST := $(notdir $(NVCC_RESULT))
 ifeq ($(NVCC_TEST),nvcc)
 CUDA_NVCC = nvcc
-CUDA_FLAGS = $(CPPFLAGS) -I /usr/local/cuda/include -arch=sm_30 -D__STRICT_ANSI__ -D_MWAITXINTRIN_H_INCLUDED -D_FORCE_INLINES
+CUDA_FLAGS = $(CPPFLAGS) -I /usr/local/cuda/include -arch=sm_30 -D__STRICT_ANSI__ -D_MWAITXINTRIN_H_INCLUDED -D_FORCE_INLINES -std=c++11 -Xcompiler -fPIC
 DLIB_CUDA_SRCS = $(DLIB_SRCDIR)/dlib/dnn/curand_dlibapi.cpp \
 	$(DLIB_SRCDIR)/dlib/dnn/cudnn_dlibapi.cpp \
 	$(DLIB_SRCDIR)/dlib/dnn/cublas_dlibapi.cpp \
@@ -34,7 +34,7 @@ OBJS += $(DLIB_CUDA_OBJS)
 .SUFFIXES: .c .m .cc .mm .cxx .cpp .o .S .cu
 .cu.o:
 	$(ECHO) compiling $@
-	$(Q) $(CUDA_NVCC) $(CUDA_FLAGS) -Xcompiler -fPIC -c -o $@ $<
+	$(Q) $(CUDA_NVCC) $(CUDA_FLAGS) -c -o $@ $<
 endif
 
 dlib_deps.o: dlib_deps.cpp
