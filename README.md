@@ -42,7 +42,7 @@ See examples directory.
 
 |                   | CPU | GPU | recall rate | precision rate |
 |-------------------|-----|-----|-------------|----------------|
-| opencv haar based |  😄  |  -  |     🤔       |       🤔        |
+| opencv haar based |  😄  |  -  |     😄       |       🤔        |
 | dlib hog based *1 |  😄  |  -  |     😄       |       😻        |
 | dlib dnn based *2 |  🤔  |  😄  |     😂       |       😻        |
 
@@ -50,7 +50,7 @@ See examples directory.
 2. http://blog.dlib.net/2016/10/easily-create-high-quality-object.html
 
 
-demonstrated movie by dlib's original author
+demonstrated movie by original author of dlib on youtube
 
 
 [![](https://img.youtube.com/vi/LsK0hzcEyHI/0.jpg)](http://www.youtube.com/watch?v=LsK0hzcEyHI "Click to play on Youtube.com")
