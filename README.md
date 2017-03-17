@@ -16,8 +16,9 @@ $ brew install jpeg libpng
 $ apt-get install libjpeg8-dev libpng12-dev
 ```
 
-**If you want to use DNN based face detector, you would have to install CUDA SDKs.**
+**If you want to use DNN based face detector, you would have to install CUDA SDKs and cuDNN SDK.**
 **Please read this page.** http://docs.nvidia.com/cuda/#axzz4anGdXQuB
+**This gem try to use CUDA if /usr/local/cuda directory is exists.**
 
 Add this line to your application's Gemfile:
 
