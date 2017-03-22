@@ -72,6 +72,19 @@ dlib_rb_image_s_load(VALUE klass, VALUE filename)
 }
 
 extern "C" VALUE
+dlib_rb_image_s_pyramid_up(VALUE klass, VALUE image)
+{
+  if (!rb_typeddata_is_kind_of(image, &rgb_image_container_data_type)) {
+    rb_raise(rb_eTypeError, "must give Dlib::Image");
+  }
+
+  rgb_image_container *image_container = dlib_rb_image_get_rgb_image_container(image);
+  dlib::pyramid_up(image_container->image);
+
+  return Qnil;
+}
+
+extern "C" VALUE
 dlib_rb_image_nr(VALUE image)
 {
   rgb_image_container *image_container = dlib_rb_image_get_rgb_image_container(image);
@@ -145,6 +158,8 @@ Init_dlib_image()
 
   rb_define_alloc_func(cDlibImage, dlib_rb_image_alloc);
   rb_define_singleton_method(cDlibImage, "load", RUBY_METHOD_FUNC(dlib_rb_image_s_load), 1);
+
+  rb_define_singleton_method(cDlibImage, "pyramid_up!", RUBY_METHOD_FUNC(dlib_rb_image_s_pyramid_up), 1);
 
   rb_define_method(cDlibImage, "nr", RUBY_METHOD_FUNC(dlib_rb_image_nr), 0);
   rb_define_method(cDlibImage, "nc", RUBY_METHOD_FUNC(dlib_rb_image_nc), 0);
