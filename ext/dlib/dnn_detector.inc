@@ -72,7 +72,15 @@ static VALUE
 dlib_rb_dnn_fd_initialize(VALUE dnn_fd, VALUE filename)
 {
   dnn_fd_container *dnn_fdcont = dlib_rb_dnn_fd_get_dnn_fd_container(dnn_fd);
-  dlib::deserialize(StringValueCStr(filename))  >> dnn_fdcont->net;
+
+  try {
+    dlib::deserialize(StringValueCStr(filename)) >> dnn_fdcont->net;
+  } catch (dlib::cuda_error& error) {
+    rb_raise(eDlibDNNFaceDetectorGPUNoMemoryError, "Bad allocation memory on GPU during loading model");
+  } catch (std::bad_alloc& error) {
+    rb_raise(eDlibDNNFaceDetectorNoMemoryError, "Bad allocation memory during loading model");
+  }
+
   return dnn_fd;
 }
 
@@ -95,9 +103,9 @@ dlib_rb_dnn_fd_detect_in_batches(VALUE dnn_fd, VALUE images)
   try {
     detections_in_batches = dnn_fdcont->net(matrixes);
   } catch (dlib::cuda_error& error) {
-    rb_raise(eDlibDNNFaceDetectorGPUNoMemoryError, "Bad allocation memory on GPU while inferencing");
+    rb_raise(eDlibDNNFaceDetectorGPUNoMemoryError, "Bad allocation memory on GPU during inferencing");
   } catch (std::bad_alloc& error) {
-    rb_raise(eDlibDNNFaceDetectorNoMemoryError, "Bad allocation memory while inferencing");
+    rb_raise(eDlibDNNFaceDetectorNoMemoryError, "Bad allocation memory during inferencing");
   }
 
   VALUE result_all = rb_ary_new_capa(detections_in_batches.size());
