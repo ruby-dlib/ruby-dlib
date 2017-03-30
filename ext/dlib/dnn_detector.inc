@@ -19,7 +19,8 @@ using net_type = loss_mmod<con<1,9,9,1,1,rcon5<rcon5<rcon5<downsampler<input_rgb
 
 static VALUE cDlibDNNFaceDetector;
 
-static VALUE eDlibDNNFaceDetectorBadAllocationError;
+static VALUE eDlibDNNFaceDetectorGPUNoMemoryError;
+static VALUE eDlibDNNFaceDetectorNoMemoryError;
 
 struct dnn_fd_container {
   net_type net;
@@ -93,8 +94,10 @@ dlib_rb_dnn_fd_detect_in_batches(VALUE dnn_fd, VALUE images)
   std::vector<std::vector<dlib::mmod_rect>> detections_in_batches;
   try {
     detections_in_batches = dnn_fdcont->net(matrixes);
+  } catch (dlib::cuda_error& error) {
+    rb_raise(eDlibDNNFaceDetectorGPUNoMemoryError, "Bad allocation memory on GPU while inferencing");
   } catch (std::bad_alloc& error) {
-    rb_raise(eDlibDNNFaceDetectorBadAllocationError, "Bad allocation memory while inferencing");
+    rb_raise(eDlibDNNFaceDetectorNoMemoryError, "Bad allocation memory while inferencing");
   }
 
   VALUE result_all = rb_ary_new_capa(detections_in_batches.size());
@@ -143,7 +146,9 @@ Init_dlib_dnn_detector()
 {
   cDlibDNNFaceDetector = rb_define_class_under(mDlib, "DNNFaceDetector", rb_cData);
 
-  eDlibDNNFaceDetectorBadAllocationError = rb_define_class_under(cDlibDNNFaceDetector, "BadAllocationError", eDlibError);
+  eDlibDNNFaceDetectorGPUNoMemoryError = rb_define_class_under(cDlibDNNFaceDetector, "GPUNoMemoryError", eDlibError);
+
+  eDlibDNNFaceDetectorNoMemoryError = rb_define_class_under(cDlibDNNFaceDetector, "NoMemoryError", eDlibError);
 
   rb_define_alloc_func(cDlibDNNFaceDetector, dlib_rb_dnn_fd_alloc);
 
