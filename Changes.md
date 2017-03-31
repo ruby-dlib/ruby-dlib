@@ -3,6 +3,12 @@
 At first, you can see original Release notes.
 http://dlib.net/release_notes.html
 
+## 1.1.4 (use dlib 19.4)
+
+### Bug fixes
+
+* raise CudaError as ruby's Exception (Dlib::CudaError)
+
 ## 1.1.3 (use dlib 19.4)
 
 ### Bug fixes
