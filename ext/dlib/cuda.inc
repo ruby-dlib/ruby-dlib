@@ -6,7 +6,6 @@ static VALUE cDlibCuda;
 
 static VALUE eDlibCudaNotAvailableError;
 
-
 #define DLIB_RB_ASSERT_CUDA_AVILABILITY()				\
   do {									\
     VALUE ret = dlib_rb_cuda_check_availability();				\

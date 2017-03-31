@@ -11,6 +11,8 @@ static VALUE mDlib;
 
 static VALUE eDlibError;
 
+static VALUE eDlibCudaError;
+
 #include "geometry.inc"
 
 #include "image.inc"
@@ -31,6 +33,8 @@ Init_dlib(void)
   rb_require("dlib/version");
 
   eDlibError = rb_define_class_under(mDlib, "Error", rb_eStandardError);
+
+  eDlibCudaError = rb_define_class_under(mDlib, "CudaError", eDlibError);
 
   Init_dlib_geometry();
   Init_dlib_image();
