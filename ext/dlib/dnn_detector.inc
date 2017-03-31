@@ -27,6 +27,7 @@ static void
 dnn_fd_container_free(void *ptr)
 {
   dnn_fd_container *dnn_fdcont = static_cast<dnn_fd_container *>(ptr);
+
   delete dnn_fdcont;
 }
 
@@ -112,7 +113,20 @@ dlib_rb_dnn_fd_detect_in_batches(VALUE dnn_fd, VALUE images)
       rb_ary_push(result, dlib_rb_rectangle_new(detection.rect));
     }
     rb_ary_push(result_all, result);
+
+    // force free memory on GPU
+    detections.clear();
+    detections.shrink_to_fit();
   }
+
+
+  // force free memory on GPU
+  dnn_fdcont->net.clean();
+  matrixes.clear();
+  matrixes.shrink_to_fit();
+  detections_in_batches.clear();
+  detections_in_batches.shrink_to_fit();
+
   return result_all;
 }
 
