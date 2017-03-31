@@ -20,7 +20,7 @@ $defs << '-DDLIB_NO_GUI_SUPPORT'
 $defs << '-DNO_DEBUG'
 $defs << '-O3'
 $CPPFLAGS << " -I#{DLIB_SRCDIR}"
-$CXXFLAGS << " -std=c++11"
+$CXXFLAGS << " -std=c++11 -funwind-tables"
 $ARCH_FLAG = '-march=native'
 
 use_cuda = File.exist?('/usr/local/cuda/lib64/libcudart.so')

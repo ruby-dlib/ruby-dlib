@@ -19,8 +19,6 @@ using net_type = loss_mmod<con<1,9,9,1,1,rcon5<rcon5<rcon5<downsampler<input_rgb
 
 static VALUE cDlibDNNFaceDetector;
 
-static VALUE eDlibDNNFaceDetectorBadAllocationError;
-
 struct dnn_fd_container {
   net_type net;
 };
@@ -71,7 +69,15 @@ static VALUE
 dlib_rb_dnn_fd_initialize(VALUE dnn_fd, VALUE filename)
 {
   dnn_fd_container *dnn_fdcont = dlib_rb_dnn_fd_get_dnn_fd_container(dnn_fd);
-  dlib::deserialize(StringValueCStr(filename))  >> dnn_fdcont->net;
+
+  try {
+    dlib::deserialize(StringValueCStr(filename)) >> dnn_fdcont->net;
+  } catch (dlib::cuda_error& error) {
+    rb_raise(eDlibCudaError, "cuda error during loading model: %s", error.info.c_str());
+  } catch (std::bad_alloc& error) {
+    rb_raise(rb_eNoMemError, "bad allocation memory during loading model");
+  }
+
   return dnn_fd;
 }
 
@@ -93,8 +99,10 @@ dlib_rb_dnn_fd_detect_in_batches(VALUE dnn_fd, VALUE images)
   std::vector<std::vector<dlib::mmod_rect>> detections_in_batches;
   try {
     detections_in_batches = dnn_fdcont->net(matrixes);
+  } catch (dlib::cuda_error& error) {
+    rb_raise(eDlibCudaError, "cuda error during inferencing: %s", error.info.c_str());
   } catch (std::bad_alloc& error) {
-    rb_raise(eDlibDNNFaceDetectorBadAllocationError, "Bad allocation memory while inferencing");
+    rb_raise(rb_eNoMemError, "bad allocation memory during inferencing");
   }
 
   VALUE result_all = rb_ary_new_capa(detections_in_batches.size());
@@ -142,8 +150,6 @@ static void
 Init_dlib_dnn_detector()
 {
   cDlibDNNFaceDetector = rb_define_class_under(mDlib, "DNNFaceDetector", rb_cData);
-
-  eDlibDNNFaceDetectorBadAllocationError = rb_define_class_under(cDlibDNNFaceDetector, "BadAllocationError", eDlibError);
 
   rb_define_alloc_func(cDlibDNNFaceDetector, dlib_rb_dnn_fd_alloc);
 
