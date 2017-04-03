@@ -27,6 +27,7 @@ static void
 dnn_fd_container_free(void *ptr)
 {
   dnn_fd_container *dnn_fdcont = static_cast<dnn_fd_container *>(ptr);
+
   delete dnn_fdcont;
 }
 
@@ -100,8 +101,10 @@ dlib_rb_dnn_fd_detect_in_batches(VALUE dnn_fd, VALUE images)
   try {
     detections_in_batches = dnn_fdcont->net(matrixes);
   } catch (dlib::cuda_error& error) {
+    dnn_fdcont->net.clean();
     rb_raise(eDlibCudaError, "cuda error during inferencing: %s", error.info.c_str());
   } catch (std::bad_alloc& error) {
+    dnn_fdcont->net.clean();
     rb_raise(rb_eNoMemError, "bad allocation memory during inferencing");
   }
 
@@ -112,7 +115,20 @@ dlib_rb_dnn_fd_detect_in_batches(VALUE dnn_fd, VALUE images)
       rb_ary_push(result, dlib_rb_rectangle_new(detection.rect));
     }
     rb_ary_push(result_all, result);
+
+    // force free memory on GPU
+    detections.clear();
+    detections.shrink_to_fit();
   }
+  // force free memory on GPU
+  detections_in_batches.clear();
+  detections_in_batches.shrink_to_fit();
+
+  matrixes.clear();
+  matrixes.shrink_to_fit();
+
+  dnn_fdcont->net.clean();
+
   return result_all;
 }
 
