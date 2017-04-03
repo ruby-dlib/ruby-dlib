@@ -3,6 +3,12 @@
 At first, you can see original Release notes.
 http://dlib.net/release_notes.html
 
+## 1.1.5 (use dlib 19.4)
+
+### Bug fixes
+
+* Make GPU memory management better with ruby's GC
+
 ## 1.1.4 (use dlib 19.4)
 
 ### Bug fixes
