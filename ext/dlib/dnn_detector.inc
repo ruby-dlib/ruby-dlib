@@ -101,8 +101,10 @@ dlib_rb_dnn_fd_detect_in_batches(VALUE dnn_fd, VALUE images)
   try {
     detections_in_batches = dnn_fdcont->net(matrixes);
   } catch (dlib::cuda_error& error) {
+    dnn_fdcont->net.clean();
     rb_raise(eDlibCudaError, "cuda error during inferencing: %s", error.info.c_str());
   } catch (std::bad_alloc& error) {
+    dnn_fdcont->net.clean();
     rb_raise(rb_eNoMemError, "bad allocation memory during inferencing");
   }
 
@@ -118,14 +120,14 @@ dlib_rb_dnn_fd_detect_in_batches(VALUE dnn_fd, VALUE images)
     detections.clear();
     detections.shrink_to_fit();
   }
-
-
   // force free memory on GPU
-  dnn_fdcont->net.clean();
-  matrixes.clear();
-  matrixes.shrink_to_fit();
   detections_in_batches.clear();
   detections_in_batches.shrink_to_fit();
+
+  matrixes.clear();
+  matrixes.shrink_to_fit();
+
+  dnn_fdcont->net.clean();
 
   return result_all;
 }
