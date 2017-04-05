@@ -19,6 +19,11 @@
 
 require 'dlib'
 
+def fixture_file(filename)
+  base_dir = File.expand_path(File.join(File.dirname(__FILE__), 'fixture'))
+  File.open(File.join(base_dir, filename))
+end
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
