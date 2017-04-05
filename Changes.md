@@ -3,6 +3,12 @@
 At first, you can see original Release notes.
 http://dlib.net/release_notes.html
 
+## 1.2.0 (use dlib 19.4)
+
+### New Features
+
+* `Dlib::Image.pyramid_up!` make `Dlib::Image` scale up to x2
+
 ## 1.1.5 (use dlib 19.4)
 
 ### Bug fixes
