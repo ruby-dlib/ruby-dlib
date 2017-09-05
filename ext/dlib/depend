@@ -33,7 +33,7 @@ OBJS += $(DLIB_CUDA_OBJS)
 
 .SUFFIXES: .c .m .cc .mm .cxx .cpp .o .S .cu
 .cu.o:
-	$(ECHO) compiling $@
+	$(ECHO) compiling $(<)
 	$(Q) $(CUDA_NVCC) $(CUDA_FLAGS) -c -o $@ $<
 endif
 
