@@ -25,6 +25,7 @@ $ARCH_FLAG = '-march=native'
 
 use_cuda = File.exist?('/usr/local/cuda/lib64/libcudart.so')
 if use_cuda
+  puts "Use CUDA"
   $defs << '-DDLIB_USE_CUDA'
   $CPPFLAGS << " -I/usr/local/cuda/include"
   $LIBS << " -lcudart -lcurand -lcublas -lcudnn"
