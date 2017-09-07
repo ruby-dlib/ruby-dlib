@@ -3,6 +3,12 @@
 At first, you can see original Release notes.
 http://dlib.net/release_notes.html
 
+## 1.2.1 (use dlib 19.4)
+
+### Bug fixes
+
+* Fixed build issue on the latest Deep Learning AMI for Ubuntu 16.04 on AWS
+
 ## 1.2.0 (use dlib 19.4)
 
 ### New Features
