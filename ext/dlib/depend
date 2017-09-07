@@ -9,11 +9,11 @@ DLIB_FUNCTIONS = \
 	cuda.inc
 OBJS += $(DLIB_OJBS)
 
-NVCC_RESULT := $(shell which nvcc 2> NULL)
+NVCC_RESULT := $(shell which nvcc 2> /dev/null)
 NVCC_TEST := $(notdir $(NVCC_RESULT))
 ifeq ($(NVCC_TEST),nvcc)
 CUDA_NVCC = nvcc
-CUDA_FLAGS = $(CPPFLAGS) -I /usr/local/cuda/include -arch=sm_30 -D__STRICT_ANSI__ -D_MWAITXINTRIN_H_INCLUDED -D_FORCE_INLINES -std=c++11 -Xcompiler -fPIC -Xcompiler -funwind-tables
+CUDA_FLAGS = -DDLIB_USE_CUDA -I /usr/local/cuda/include -arch=sm_30 -D__STRICT_ANSI__ -D_MWAITXINTRIN_H_INCLUDED -D_FORCE_INLINES -std=c++11 -Xcompiler -fPIC -Xcompiler -funwind-tables
 DLIB_CUDA_SRCS = $(DLIB_SRCDIR)/dlib/dnn/curand_dlibapi.cpp \
 	$(DLIB_SRCDIR)/dlib/dnn/cudnn_dlibapi.cpp \
 	$(DLIB_SRCDIR)/dlib/dnn/cublas_dlibapi.cpp \
@@ -33,7 +33,7 @@ OBJS += $(DLIB_CUDA_OBJS)
 
 .SUFFIXES: .c .m .cc .mm .cxx .cpp .o .S .cu
 .cu.o:
-	$(ECHO) compiling $@
+	$(ECHO) compiling $(<)
 	$(Q) $(CUDA_NVCC) $(CUDA_FLAGS) -c -o $@ $<
 endif
 
