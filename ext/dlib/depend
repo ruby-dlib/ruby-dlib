@@ -12,6 +12,9 @@ OBJS += $(DLIB_OJBS)
 NVCC_RESULT := $(shell which nvcc 2> /dev/null)
 NVCC_TEST := $(notdir $(NVCC_RESULT))
 ifeq ($(NVCC_TEST),nvcc)
+
+$(info Found nvcc!)
+
 CUDA_NVCC = nvcc
 CUDA_FLAGS = -DDLIB_USE_CUDA -I /usr/local/cuda/include -arch=sm_30 -D__STRICT_ANSI__ -D_MWAITXINTRIN_H_INCLUDED -D_FORCE_INLINES -std=c++11 -Xcompiler -fPIC -Xcompiler -funwind-tables
 DLIB_CUDA_SRCS = $(DLIB_SRCDIR)/dlib/dnn/curand_dlibapi.cpp \
