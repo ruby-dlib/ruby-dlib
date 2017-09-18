@@ -34,3 +34,6 @@ end
 
 have_func('rb_get_kwargs')
 create_makefile('dlib')
+
+# dry run Makefile and get debug info
+system('make -n')
