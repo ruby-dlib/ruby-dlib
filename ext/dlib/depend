@@ -8,13 +8,13 @@ DLIB_FUNCTIONS = \
 	dnn_detector.inc \
 	cuda.inc
 
-NVCC_RESULT := $(shell which nvcc 2> /dev/null)
-NVCC_TEST := $(notdir $(NVCC_RESULT))
-ifeq ($(NVCC_TEST),nvcc)
+# root user can't access nvcc command with relative pass because of their $PATH env
+NVCC_TEST := $(shell command -v /usr/local/cuda/bin/nvcc 2> /dev/null)
+ifdef NVCC_TEST
 
-$(info Found nvcc!)
+$(info Found nvcc! at $(NVCC_TEST))
 
-CUDA_NVCC = nvcc
+CUDA_NVCC = $(NVCC_TEST)
 CUDA_FLAGS = -DDLIB_USE_CUDA -I /usr/local/cuda/include -arch=sm_30 -D__STRICT_ANSI__ -D_MWAITXINTRIN_H_INCLUDED -D_FORCE_INLINES -std=c++11 -Xcompiler -fPIC -Xcompiler -funwind-tables
 DLIB_CUDA_SRCS = $(DLIB_SRCDIR)/dlib/dnn/curand_dlibapi.cpp \
 	$(DLIB_SRCDIR)/dlib/dnn/cudnn_dlibapi.cpp \
